@@ -5,12 +5,18 @@ services:
     build:
       context: .
       args:
-        HDF5_VERSION: 1.12.2
-        NETCDF_VERSION: 4.8.1
-        R_LIBRARIES: "dplyr ncdf4 tidync"
-        R_VERSION: 4.3.0
-    command: "opendap_ncml_test.r"
+        CURL_VERSION: "${CURL_VERSION}"
+        DAP_VERSION: "${DAP_VERSION}"
+        HDF5_VERSION: "${HDF5_VERSION}"
+        NCO_VERSION: "${NCO_VERSION}"
+        NETCDF_VERSION: "${NETCDF_VERSION}"
+        R_VERSION: "${R_VERSION}"
+        BASE_IMAGE: "r-base:${R_VERSION}"
+    command: "'Rscript opendap_ncml_test.r 2>&1 > results/opendap_ncml_test.r${R_VERSION}-curl${CURL_VERSION}-hdf5${HDF5_VERSION}-netcdf${NETCDF_VERSION}.log'"
+    entrypoint: ["bash", "-c"]
     environment:
       CURLOPT_VERBOSE: 1
+    image: "r-ereefs-debugging:r${R_VERSION}-curl${CURL_VERSION}-dap${DAP_VERSION}-hdf5${HDF5_VERSION}-netcdf${NETCDF_VERSION}"
     volumes:
-      - ./:/app/
+      - ./opendap_ncml_test.r:/app/opendap_ncml_test.r
+      - ./results/:/app/results/

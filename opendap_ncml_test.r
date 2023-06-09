@@ -1,8 +1,10 @@
 # Dump information about this test environment
 sessionInfo()
-
-system("curl --version 2>&1")
-
+message("\n")
+system("cat .NcLibs")
+message("\n")
+system("cat .Renviron")
+message("\n")
 print(tibble::tibble(
   Package = names(installed.packages()[,3]),
   Version = unname(installed.packages()[,3])
@@ -28,7 +30,7 @@ nkcs_cmd <- paste(
     ' -dtime,', dim_t, ',', dim_t,
     ' -dk,', dim_k, ',', dim_k,
     ' -v', bgc_param,
-    ' "', ncml_url, '"',
+    ' "', ncml_url, '#log&show=fetch"',
     sep = '', collapse = ''
 )
 message(nkcs_cmd)
